@@ -1,6 +1,8 @@
 import React from 'react';
 
-const infoCard = ({ bgClass, cardTitle, img }) => {
+const infoCard = ({ cardInfo }) => {
+    const { bgClass, cardTitle, img } = cardInfo;
+
     return (
         <div className={`card lg:card-side ${bgClass} shadow-xl hover:shadow-2xl my-0  p-5`}>
             <figure><img src={img} alt="Album" /></figure>

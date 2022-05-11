@@ -18,4 +18,4 @@ const Appointment = () => {
 };
 
 export default Appointment;
-// style={{ backgroundImage: `url(${appointment})` }}
+
