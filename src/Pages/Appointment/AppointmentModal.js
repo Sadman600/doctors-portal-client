@@ -1,8 +1,15 @@
 import { format } from 'date-fns';
 import React from 'react';
 
-const AppointmentModal = ({ treatment, date }) => {
+const AppointmentModal = ({ treatment, date, setTreatment }) => {
     const { name, slots } = treatment;
+    const handleBooking = e => {
+        e.preventDefault();
+        const solt = e.target.slot.value;
+        const name = e.target.name.value;
+        console.log(solt, name);
+        setTreatment(null);
+    }
     return (
         <div>
             <input type="checkbox" id="booking-modal" className="modal-toggle" />
@@ -10,11 +17,11 @@ const AppointmentModal = ({ treatment, date }) => {
                 <div className="modal-box">
                     <label for="booking-modal" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
                     <h3 className="font-bold text-lg">Booking for: {name}</h3>
-                    <form className='grid grid-cols-1 gap-2 justify-items-center mt-2'>
+                    <form onSubmit={handleBooking} className='grid grid-cols-1 gap-2 justify-items-center mt-2'>
                         <input name='date' type="text" value={format(date, 'PP')} className="input input-bordered w-full max-w-xs" readOnly />
                         <select name='slot' className="select select-bordered w-full max-w-xs">
                             {
-                                slots.map(slot => <option key={slot} value={slot}>{slot}</option>)
+                                slots.map(slot => <option value={slot} key={slot} >{slot}</option>)
                             }
                         </select>
                         <input name='name' type="text" placeholder="Enter your name" className="input input-bordered w-full max-w-xs" />
