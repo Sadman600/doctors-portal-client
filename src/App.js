@@ -7,6 +7,7 @@ import Appointment from './Pages/Appointment/Appointment';
 import Reviews from './Pages/Reviews/Reviews';
 import ContactUs from './Pages/ContactUs/ContactUs';
 import Login from './Pages/Login/Login';
+import SignUp from './Pages/Login/SignUp';
 function App() {
   return (
     <div className="max-w-7xl mx-auto">
@@ -18,6 +19,7 @@ function App() {
         <Route path="/reviews" element={<Reviews />} />
         <Route path="/contactus" element={<ContactUs />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
     </div>
   );
