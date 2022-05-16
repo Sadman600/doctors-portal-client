@@ -1,26 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useCreateUserWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { useForm } from "react-hook-form";
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
 const Login = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
     const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
     const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
+    useEffect(() => {
+        if (user || gUser) {
+            navigate(from, { replace: true });
+        }
+    }, [user, gUser, from, navigate]);
+
     let signInError;
     if (error || gError) {
         signInError = <p className='text-red-500'>Error: {error?.message || gError?.message}</p>
     }
     if (loading || gLoading) {
         return <div className='hero min-h-screen'>
-            <button class="btn loading ">loading...</button>
+            <button className="btn loading ">loading...</button>
         </div>
     }
-    if (user || gUser) {
-        console.log(gUser?.user?.displayName);
-    }
+
     const submitUserWithEmailAndPassword = data => {
-        createUserWithEmailAndPassword(data);
+        createUserWithEmailAndPassword(data.email, data.password);
     };
     return (
         <div className="hero min-h-screen ">
@@ -85,8 +92,8 @@ const Login = () => {
                         <input className="btn btn-wide btn-primary" type="submit" value='Login' />
                     </form>
                     <div>
-                        <label class="label">
-                            <p>New to Doctors Portal?<Link to='/signup' class="label-text-alt link link-hover text-primary"> Create new an Account?</Link></p>
+                        <label className="label">
+                            <p>New to Doctors Portal?<Link to='/signup' className="label-text-alt link link-hover text-primary"> Create new an Account?</Link></p>
                         </label>
                     </div>
                     <div className="divider">OR</div>
