@@ -1,20 +1,23 @@
 import React, { useEffect } from 'react';
-import { useCreateUserWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import { useCreateUserWithEmailAndPassword, useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
+import useToken from '../../hooks/useToken';
 const Login = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
-    const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
+    // const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
+    const [signInWithEmailAndPassword, user, loading, error,] = useSignInWithEmailAndPassword(auth);
     const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
+    const [token] = useToken(user || gUser)
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
     useEffect(() => {
-        if (user || gUser) {
+        if (token) {
             navigate(from, { replace: true });
         }
-    }, [user, gUser, from, navigate]);
+    }, [token, from, navigate]);
 
     let signInError;
     if (error || gError) {
@@ -27,7 +30,7 @@ const Login = () => {
     }
 
     const submitUserWithEmailAndPassword = data => {
-        createUserWithEmailAndPassword(data.email, data.password);
+        signInWithEmailAndPassword(data.email, data.password);
     };
     return (
         <div className="hero min-h-screen ">
@@ -76,16 +79,16 @@ const Login = () => {
                                         value: 6,
                                         message: 'Must be 6 characters or longer'
                                     },
-                                    pattern: {
-                                        value: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*[a-zA-Z0-9]).{6,}$/,
-                                        message: 'Provide a valid password'
-                                    }
+                                    // pattern: {
+                                    //     value: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*[a-zA-Z0-9]).{6,}$/,
+                                    //     message: 'Provide a valid password'
+                                    // }
                                 })}
                             />
                             <label className="label">
                                 {errors.password?.type === 'required' && <span className="label-text-alt text-red-500">{errors.password.message}</span>}
                                 {errors.password?.type === 'minLength' && <span className="label-text-alt text-red-500">{errors.password.message}</span>}
-                                {errors.password?.type === 'pattern' && <span className="label-text-alt text-red-500">{errors.password.message}</span>}
+                                {/* {errors.password?.type === 'pattern' && <span className="label-text-alt text-red-500">{errors.password.message}</span>} */}
                             </label>
                         </div>
                         {signInError}

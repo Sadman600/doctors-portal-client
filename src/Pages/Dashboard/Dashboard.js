@@ -1,22 +1,28 @@
 import React from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { Link, Outlet } from 'react-router-dom';
+import auth from '../../firebase.init';
+import useAdmin from '../../hooks/useAdmin';
 
 const Dashboard = () => {
+    const [user] = useAuthState(auth);
+    const [admin] = useAdmin(user);
     return (
-        <div class="drawer drawer-mobile">
-            <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
-            <div class="drawer-content flex flex-col items-center justify-center">
-                <h1 className='text-5xl text-green-600'>Dashboard</h1>
+        <div className="drawer drawer-mobile">
+            <input id="my-sidebar" type="checkbox" className="drawer-toggle" />
+            <div className="drawer-content ">
+                <h1 className='text-3xl font-bold  text-green-600'>Welcome to your Dashboard</h1>
                 <Outlet />
-                <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden">Open drawer</label>
+
 
             </div>
-            <div class="drawer-side">
-                <label for="my-drawer-2" class="drawer-overlay"></label>
-                <ul class="menu p-4 overflow-y-auto w-80 bg-red-100 text-base-content">
+            <div className="drawer-side">
+                <label htmlFor="my-sidebar" className="drawer-overlay"></label>
+                <ul className="menu p-4 overflow-y-auto w-80 text-base-content">
 
-                    {/* <li><Link to='/tasks'>Sidebar Item 1</Link></li> */}
-                    <li><a>Sidebar Item 2</a></li>
+                    <li><Link to='/dashboard'>My Appointments</Link></li>
+                    <li><Link to='review'>My Review</Link></li>
+                    <li>{admin && <Link to='alluser'>All User</Link>}</li>
                 </ul>
 
             </div>
