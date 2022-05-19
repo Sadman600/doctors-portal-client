@@ -22,21 +22,24 @@ const AddDoctors = () => {
                     const doctor = {
                         name: data.name,
                         email: data.email,
+                        specialization: data.specialization,
                         img: img
                     };
                     fetch('http://localhost:5000/doctor', {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'authorization': `Bearer ${localStorage.getItem('accessToken')}`
                         },
                         body: JSON.stringify(doctor)
                     }).then(res => res.json())
                         .then(data => {
                             // console.log(data);
                             if (data.result.acknowledged) {
-                                toast.success('Doctors data insert successfully');
+                                toast.success('Doctors added successfully')
+
                             } else {
-                                toast.error('Doctors data insert faild');
+                                toast.error('Doctors added faild');
                             }
                         })
                 }
