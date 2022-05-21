@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 import ManageDoctor from './ManageDoctor';
 
 const ManageDoctors = () => {
-    const { data: doctors, isLoading, refetch } = useQuery('doctors', () =>
+    const { isLoading, data: doctors, refetch } = useQuery('doctors', () =>
         fetch('http://localhost:5000/doctor', {
             method: 'GET',
             headers: {
@@ -23,15 +23,17 @@ const ManageDoctors = () => {
                     <thead>
                         <tr>
                             <th></th>
+                            <th></th>
                             <th>Name</th>
+                            <th>Specialty</th>
                             <th>Email</th>
-                            <th>Specialist</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         {
                             doctors.map((doctor, index) => <ManageDoctor
-                                key={doctor._id}
+                                key={index}
                                 doctor={doctor}
                                 index={index}
                                 refetch={refetch}

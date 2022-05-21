@@ -22,7 +22,7 @@ const AddDoctors = () => {
                     const doctor = {
                         name: data.name,
                         email: data.email,
-                        specialization: data.specialization,
+                        specialty: data.specialty,
                         img: img
                     };
                     fetch('http://localhost:5000/doctor', {
@@ -95,7 +95,7 @@ const AddDoctors = () => {
                         <label className="label">
                             <span className="label-text">specialization</span>
                         </label>
-                        <select className="select select-bordered w-full max-w-xs">
+                        <select {...register('specialty')} className="select select-bordered w-full max-w-xs">
                             {
                                 services.map(service => <option key={service._id} value={service.name}>{service.name}</option>)
                             }
